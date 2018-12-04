@@ -53,7 +53,7 @@
 				<input type="edit" id="itemName_{$item['id']}" value="{$item['name']}">
 			</td>
 			<td>
-				<input type="edit" id="itemPrice_{$item['id']}" value="{$item['price']}">
+				<input type="edit" id="itemPrice_{$item['id']}" value="{$item['price']}" size="8">
 			</td>
 			<td>
 				<select id="itemCatId_{$item['id']}">
@@ -67,7 +67,7 @@
 				</select>
 			</td>
 			<td>
-				<textarea id="itemDesc_{$item['id']}">
+				<textarea id="itemDesc_{$item['id']}" rows="20" cols="45">
 						{$item['description']}				
 				</textarea>
 			</td>

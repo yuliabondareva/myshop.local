@@ -2,10 +2,10 @@
 
 /*Инициализация подключения к БД*/
 
-$dblocation = "127.0.0.1";
-$dbname = "myshop";
+$dblocation = "localhost";
 $dbuser = "root";
 $dbpassword = "";
+$dbname = "myshop";
 
 //соединяем с БД
 $db = mysqli_connect($dblocation, $dbuser, $dbpassword, $dbname);
