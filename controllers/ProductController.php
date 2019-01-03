@@ -13,9 +13,10 @@ include_once '../models/ProductsModel.php';
 Формирование страницы продуктов
 */
 
-function indexAction($smarty){
+function indexAction($smarty)
+{
 	$itemId = isset($_GET['id']) ? $_GET['id']:null;
-	if(! $itemId) exit();
+	if (! $itemId) exit();
 
 	//получить данные продукта
 	$rsProduct = getProductById($itemId);

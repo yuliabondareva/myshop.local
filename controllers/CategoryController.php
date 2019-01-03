@@ -14,9 +14,10 @@
 Формирование страницы категории
 */
 
-function indexAction($smarty){
+function indexAction($smarty)
+{
 	$catId = isset($_GET['id']) ? $_GET['id']:null;
-	if(! $catId) exit();
+	if (! $catId) exit();
 
 	$rsProducts = null;
 	$rsChildCats = null;
@@ -26,7 +27,7 @@ function indexAction($smarty){
 	если главная категория, то показываем дочерние категории,
 	иначе показывает товар
 	*/
-	if($rsCategory['parent_id'] == 0){
+	if ($rsCategory['parent_id'] == 0) {
 		$rsChildCats = getChildrenForCat($catId);
 	} else {
 		$rsProducts = getProductsByCat($catId);

@@ -10,20 +10,20 @@
 */
 function loadPage($smarty, $controllerName, $actionName = 'index')
 {
-	include_once PathPrefix . $controllerName . PathPostfix;
+    include_once PathPrefix . $controllerName . PathPostfix;
 
-	$function = $actionName . 'Action';
-	$function($smarty);
+    $function = $actionName . 'Action';
+    $function($smarty);
 }
 
 function loadTemplate($smarty, $templateName)
 {
-	$smarty->display(TemplatePrefix . $templateName . TemplatePostfix);
+    $smarty->display(TemplatePrefix . $templateName . TemplatePostfix);
 }
 
 function loadAdminTemplate($smarty, $templateName)
 {
-	$smarty->display(TemplateAdminPrefix . $templateName . TemplatePostfix);
+    $smarty->display(TemplateAdminPrefix . $templateName . TemplatePostfix);
 }
 
 /*
@@ -32,34 +32,35 @@ function loadAdminTemplate($smarty, $templateName)
 
 function d($value = null, $die = 1)
 {
-	echo 'Debug: <br /><pre>';
-	print_r($value);
-	echo '</pre>';
+    echo 'Debug: <br /><pre>';
+    print_r($value);
+    echo '</pre>';
 
-	if($die) die;
+    if ($die) die;
 }
 
 /*
 Преобразовываем результаты работы функции выборки в ассоциативный массив
 */
 
-function createSmartyRsArray($rs){
-	if(! $rs) return false;
+function createSmartyRsArray($rs)
+{
+    if (! $rs) return false;
 
-	$smartyRs = array();
-	while ($row = mysqli_fetch_assoc($rs)) {
-		$smartyRs[] = $row;
-	}
-	
-	 return $smartyRs;
+    $smartyRs = array();
+    while ($row = mysqli_fetch_assoc($rs)) {
+        $smartyRs[] = $row;
+    }
+     return $smartyRs;
 }
 
 /*
 Редирект
 */
 
-function redirect($url){
-	if(! $url) $url = '/myshop.local/www/index.php';
-	header("Location: $url");
-	exit;
+function redirect($url)
+{
+    if (! $url) $url = '/myshop.local/www/index.php';
+    header("Location: $url");
+    exit;
 }

@@ -15,9 +15,10 @@
 Добавление продуктов в корзину
 */
 
-function addtocartAction(){
+function addtocartAction()
+{
 	$itemId = isset($_GET['id']) ? intval($_GET['id']) : null;
-	if(! $itemId) return false;
+	if (! $itemId) return false;
 
 	$resData = array();
 
@@ -36,17 +37,18 @@ function addtocartAction(){
 Удаление продукта из корзины
 */
 
-function removefromcartAction(){
+function removefromcartAction()
+{
 	$itemId = isset($_GET['id']) ? intval($_GET['id']) : null;
-	if(! $itemId) exit();
+	if (! $itemId) exit();
 
 	$resData = array();
 	$key = array_search($itemId, $_SESSION['cart']);
-	if (key !== false){
+	if (key !== false) {
 		unset($_SESSION['cart'][$key]);
 		$resData['success'] = 1;		
 		$resData['cntItems'] = count($_SESSION['cart']);
-	} else{
+	} else {
 		$resData['success'] = 0;
 	}
 	echo json_encode($resData);
@@ -56,7 +58,8 @@ function removefromcartAction(){
 Формирование страницы корзины
 */
 
-function indexAction($smarty){
+function indexAction($smarty)
+{
 	$itemsIds = isset($_SESSION['cart']) ? $_SESSION['cart'] : array();
 
 	$rsCategories = getAllMainCatsWithChildren();
@@ -75,11 +78,12 @@ function indexAction($smarty){
 Формирование страницы заказа
 */
 
-function orderAction($smarty){
+function orderAction($smarty)
+{
 	//получаем массив идетнификаторов продуктов корзины
 	$itemsIds = isset($_SESSION['cart']) ? $_SESSION['cart'] : null;
 	// если корзина пуста, то редиректим в корзину
-	if(! $itemsIds){
+	if (! $itemsIds) {
 		redirect('/myshop.local/www/?controller=cart');
 		return;
 	}
@@ -105,10 +109,10 @@ function orderAction($smarty){
 
 	//&$item - для того,чтобы при изменении переменной $item менялся и элемент массива $rsProducts
 
-	$i=null;
-	foreach($rsProducts as &$item){
+	$i = null;
+	foreach ($rsProducts as $item) {
 		$item['cnt'] = isset($itemsCnt[$item['id']]) ? $itemsCnt[$item['id']] : null;
-		if($item['cnt']){
+		if ($item['cnt']) {
 			$item['realPrice'] = $item['cnt'] * $item['price'];
 		} else {
 			//если товар есть в корзине, а кол-во = 0, то удаляем товар
@@ -118,7 +122,7 @@ function orderAction($smarty){
 
 	}
 
-	if(! $rsProducts){
+	if (! $rsProducts) {
 		echo "Корзина пуста";
 		return;
 	}
@@ -144,11 +148,12 @@ function orderAction($smarty){
 Функция сохранения заказа
 */
 
-function saveorderAction(){
+function saveorderAction()
+{
 	//получаем массив покупаемых товаров
 	$cart = isset($_SESSION['saleCart']) ? $_SESSION['saleCart'] : null;
 	// если в корзине пусто, то формируем ответ с ошибкой
-	if(! $cart){
+	if (! $cart) {
 		$resData['success'] = 0;
 		$resData['message'] = 'Нет товаров для заказа';
 		echo json_encode($resData);
@@ -163,7 +168,7 @@ function saveorderAction(){
 	$orderId = makeNewOrder($name, $phone, $adress);
 
 	//если заказ не создан, то выдаем ошибку и завершаем функцию
-	if(! $orderId){
+	if (! $orderId) {
 		$resData['success'] = 0;
 		$resData['message'] = 'Ошибка создания заказа';
 		echo json_encode($resData);
@@ -173,7 +178,7 @@ function saveorderAction(){
 	$res = setPurchaseForOrder($orderId, $cart);
 
 	//если успешно, то формируем ответ, удаляем переменные корзины
-	if($res){
+	if ($res) {
 		$resData['success'] = 1;
 		$resData['message'] = 'Заказ сохранен';
 		unset($_SESSION['saleCart']);

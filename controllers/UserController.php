@@ -14,7 +14,8 @@ include_once '../models/PurchaseModel.php';
 AJAX регистрация пользователя
 */
 
-function registerAction(){
+function registerAction()
+{
 	$email = isset($_REQUEST['email']) ? $_REQUEST['email'] : null;
 	$email = trim($email);
 
@@ -34,12 +35,12 @@ function registerAction(){
 		$resData['message'] = "Пользователь с таким email ('{$email}') уже зарегистрирован";
 	}
 
-	if(! $resData){
+	if (! $resData) {
 		$pwdMD5 = md5($pwd1);
 
 		$userData = registerNewUser($email, $pwdMD5, $name, $phone, $adress);
 
-		if($userData['success']){
+		if ($userData['success']) {
 			$resData['message'] = 'Пользователь успешно зарегистрирован';
 			$resData['success'] = 1;
 
@@ -62,8 +63,9 @@ function registerAction(){
 Разлогинивание пользователя
 */
 
-function logoutAction(){
-if(isset($_SESSION['user'])){
+function logoutAction()
+{
+if (isset($_SESSION['user'])) {
 	unset($_SESSION['user']);
 	unset($_SESSION['cart']);
 }
@@ -75,7 +77,8 @@ if(isset($_SESSION['user'])){
 Авторизация пользователя
 */
 
-function loginAction(){
+function loginAction()
+{
 	$email = isset($_REQUEST['email']) ? $_REQUEST['email'] : null;
 	$email = trim($email);
 
@@ -84,7 +87,7 @@ function loginAction(){
 
 	$userData = loginUser($email, $pwd);
 
-	if($userData['success']){
+	if ($userData['success']) {
 		$userData = $userData[0];
 
 		$_SESSION['user'] = $userData;
@@ -104,10 +107,11 @@ function loginAction(){
 Формирование страницы пользователя
 */
 
-function indexAction($smarty){
+function indexAction($smarty)
+{
 
 	//если пользователь не залогинен, то редирект на главную страницу
-	if(! isset($_SESSION['user'])){
+	if (! isset($_SESSION['user'])) {
 		redirect('/myshop.local/www/index.php');
 	}
 	
@@ -131,25 +135,25 @@ function indexAction($smarty){
 Обновление данных пользователя
 */
 
-function updateAction(){
-
+function updateAction()
+{
 	//если пользователь не залогинен, то редирект на главную страницу
-	if(! isset($_SESSION['user'])){
+	if (! isset($_SESSION['user'])) {
 		redirect('/myshop.local/www/index.php');
 	}
 
-	$resData 	= array();
-	$phone 		= isset($_REQUEST['phone']) 	? $_REQUEST['phone'] 	: null;
-	$adress 	= isset($_REQUEST['adress']) 	? $_REQUEST['adress'] 	: null;
-	$name 		= isset($_REQUEST['name']) 		? $_REQUEST['name'] 	: null;
-	$pwd1 		= isset($_REQUEST['pwd1']) 		? $_REQUEST['pwd1'] 	: null;
-	$pwd2		= isset($_REQUEST['pwd2']) 		? $_REQUEST['pwd2'] 	: null;
-	$curPwd 	= isset($_REQUEST['curPwd']) 	? $_REQUEST['curPwd'] 	: null;
+	$resData = array();
+	$phone = isset($_REQUEST['phone']) ? $_REQUEST['phone'] : null;
+	$adress = isset($_REQUEST['adress']) ? $_REQUEST['adress'] : null;
+	$name = isset($_REQUEST['name']) ? $_REQUEST['name'] : null;
+	$pwd1 = isset($_REQUEST['pwd1']) ? $_REQUEST['pwd1'] : null;
+	$pwd2 = isset($_REQUEST['pwd2']) ? $_REQUEST['pwd2'] : null;
+	$curPwd = isset($_REQUEST['curPwd']) ? $_REQUEST['curPwd'] : null;
 
 	//проверка правильности введения пароля и того под которым залогинились
 	$curPwdMD5 = md5($curPwd);
 
-	if(! $curPwd || ($_SESSION['user']['pwd'] != $curPwdMD5) ){
+	if (! $curPwd || ($_SESSION['user']['pwd'] != $curPwdMD5)) {
 		$resData['success'] = 0;
 		$resData['message'] = 'Текущий пароль неверный';
 		echo json_encode($resData);
@@ -169,9 +173,8 @@ function updateAction(){
 		$_SESSION['user']['adress'] = $adress;
 		
 			$newPwd = $_SESSION['user']['pwd'];
-			if ( $pwd1 && ($pwd1 == $pwd2) ) {
+			if ( $pwd1 && ($pwd1 == $pwd2)) {
 				$newPwd = md5(trim($pwd1));
-
 			}
 
 		$_SESSION['user']['pwd'] = $newPwd;

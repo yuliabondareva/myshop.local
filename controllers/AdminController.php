@@ -3,7 +3,6 @@
 Контроллер админки
 */
 
-
 //подключаем модели
 include_once '../models/AdminsModel.php';
 include_once '../models/CategoriesModel.php';
@@ -17,10 +16,10 @@ $smarty->assign('templateAdminWebPath', TemplateAdminWebPath);
 
 if (isset($_SESSION['admin'])) {
 		$smarty->assign('arUser', $_SESSION['admin']);
-	}
+}
 
-function indexAction($smarty){
-
+function indexAction($smarty)
+{
 	$rsCategories = getAllMainCategories();
 
 	$smarty->assign('rsCategories', $rsCategories);
@@ -34,7 +33,8 @@ function indexAction($smarty){
 Добавление новой категории
 */
 
-function addnewcatAction(){
+function addnewcatAction()
+{
 	$catName = $_POST['newCategoryName'];
 	$catParentId = $_POST['generalCatId'];
 
@@ -54,7 +54,8 @@ function addnewcatAction(){
 Страница управления категориями
 */
 
-function categoryAction($smarty){
+function categoryAction($smarty)
+{
 	$rsCategories = getAllCategories();
 	$rsMainCategories = getAllMainCategories();
 
@@ -71,14 +72,15 @@ function categoryAction($smarty){
 Обновление категории
 */
 
-function updatecategoryAction(){
+function updatecategoryAction()
+{
 	$itemId = $_POST['itemId'];
 	$parentId = $_POST['parentId'];
 	$newName = $_POST['newName'];
 
 	$res = updateCategoryData($itemId, $parentId, $newName);
 
-	if($res){
+	if ($res) {
 		$resData['success'] = 1;
 		$resData['message'] = 'Категория обновлена';
 	} else {
@@ -94,7 +96,8 @@ function updatecategoryAction(){
 Страница управления товаром
 */
 
-function productsAction($smarty){
+function productsAction($smarty)
+{
 	$rsCategories = getAllSubCategories();
 	$rsProducts = getProducts();
 
@@ -111,17 +114,18 @@ function productsAction($smarty){
 Добавление нового продукта
 */
 
-function addproductAction(){
+function addproductAction()
+{
 	$itemName = $_POST['itemName'];
 	$itemPrice = $_POST['itemPrice'];
 	$itemDesc = $_POST['itemDesc'];
 	$itemCat = $_POST['itemCatId'];
 
-	if($itemCat != null & $itemName != null & $itemPrice != null & $itemDesc != null){
+	if ($itemCat != null & $itemName != null & $itemPrice != null & $itemDesc != null) {
 		$res = insertProducts($itemName, $itemPrice, $itemDesc, $itemCat);
 	}
 
-	if($res){
+	if ($res) {
 		$resData['success'] = 1;
 		$resData['message'] = 'Изменения успешно внесены';
 	} else {
@@ -138,7 +142,8 @@ function addproductAction(){
 Обновление продукта
 */
 
-function updateproductAction(){
+function updateproductAction()
+{
 	$itemId = $_POST['itemId'];
 	$itemName = $_POST['itemName'];
 	$itemPrice = $_POST['itemPrice'];
@@ -148,7 +153,7 @@ function updateproductAction(){
 
 	$res = updateProduct($itemId, $itemName, $itemPrice, $itemStatus, $itemDesc, $itemCat);
 
-	if($res){
+	if ($res) {
 		$resData['success'] = 1;
 		$resData['message'] = 'Изменения успешно внесены';
 	} else {
@@ -164,7 +169,8 @@ function updateproductAction(){
 Добавление картинки товара
 */
 
-function uploadAction(){
+function uploadAction()
+{
 	$maxSize = 2 * 1024 *1024;
 	$itemId = $_POST['itemId'];
 	//получаем расширение загружаемого файла
@@ -178,13 +184,13 @@ function uploadAction(){
 	}
 
 	//загружаем файл
-	if(is_uploaded_file($_FILES['filename']['tmp_name'])){
+	if (is_uploaded_file($_FILES['filename']['tmp_name'])) {
 		// если файл загружен, то перенаправляем его из временной директории в конечную
 		
 		$res = move_uploaded_file($_FILES['filename']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . '/myshop.local/www/templates/default/images/products/' . $newFileName);
-		if($res){
+		if ($res) {
 			$res = updateProductImage($itemId, $newFileName);
-			if($res){
+			if ($res) {
 				redirect('/myshop.local/www/?controller=admin&action=products');
 			}
 		}
@@ -197,7 +203,8 @@ function uploadAction(){
 Страница заказов
 */
 
-function ordersAction($smarty){
+function ordersAction($smarty)
+{
 	$rsOrders = getOrders();
 	$smarty->assign('rsOrders', $rsOrders);
 	$smarty->assign('pageTitle', 'Заказы');
@@ -211,13 +218,14 @@ function ordersAction($smarty){
 Статус заказа
 */
 
-function setorderstatusAction(){
+function setorderstatusAction()
+{
 	$itemId = $_POST['itemId'];
 	$status = $_POST['status'];
 
 	$res = updateOrderStatus($itemId, $status);
 
-	if($res){
+	if ($res) {
 		$resData['success'] = 1;
 	} else {
 		$resData['success'] = 0;
@@ -232,13 +240,14 @@ function setorderstatusAction(){
 Дата оплаты заказа
 */
 
-function setorderdatepaymentAction(){
+function setorderdatepaymentAction()
+{
 	$itemId = $_POST['itemId'];
 	$datePayment = $_POST['datePayment'];
 
 	$res = updateOrderDatePayment($itemId, $datePayment);
 
-	if($res){
+	if ($res) {
 		$resData['success'] = 1;
 	} else {
 		$resData['success'] = 0;
@@ -253,19 +262,20 @@ function setorderdatepaymentAction(){
 Разлогинивание админа
 */
 
-function logoutadminAction(){
-if(isset($_SESSION['admin'])){
+function logoutadminAction()
+{
+if (isset($_SESSION['admin'])) {
 	unset($_SESSION['admin']);
 }
 	redirect('/myshop.local/www/admin.php');
-
 }
 
 /*
 Авторизация админа
 */
 
-function loginadminAction(){
+function loginadminAction()
+{
 	$email = isset($_REQUEST['email']) ? $_REQUEST['email'] : null;
 	$email = trim($email);
 
@@ -274,7 +284,7 @@ function loginadminAction(){
 
 	$adminData = loginadminAdmin($email, $pwd);
 
-	if($adminData['success']){
+	if ($adminData['success']) {
 		$adminData = $adminData[0];
 
 		$_SESSION['admin'] = $adminData;
@@ -287,7 +297,5 @@ function loginadminAction(){
 		$resData['success'] = 0;
 		$resData['message'] = 'Неверный логин или пароль';
 	}
-
 	echo json_encode($resData);
-
 }
